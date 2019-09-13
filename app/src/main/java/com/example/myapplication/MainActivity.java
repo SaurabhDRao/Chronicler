@@ -1,37 +1,61 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText emailInput, passwordInput;
-    Button loginBtn;
-    ImageView registerBtn;
+    BottomNavigationView navView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setTitle("Login");
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-        emailInput = findViewById(R.id.login_email_input);
-        passwordInput = findViewById(R.id.login_password_input);
-        loginBtn = findViewById(R.id.login_btn);
-        registerBtn = findViewById(R.id.login_register_btn);
-
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, RegisterActivity.class));
-            }
-        });
+        navView = findViewById(R.id.nav_view);
+        navView.setOnNavigationItemSelectedListener(navListener);
     }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch(item.getItemId()) {
+                        case R.id.navigation_home:
+                            selectedFragment = new HomeFragment();
+                            break;
+
+                        case R.id.navigation_settings:
+                            selectedFragment = new SettingsFragment();
+                            break;
+
+                        case R.id.navigation_dashboard:
+                            selectedFragment = new DashboardFragment();
+                            break;
+
+                        default: return false;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+
+                    return true;
+                }
+            };
 }
