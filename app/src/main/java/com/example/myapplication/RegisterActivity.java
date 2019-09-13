@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -14,6 +15,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText nameInput, emailInput, passwordInput, confirmPasswordInput;
     Button registerBtn;
     ImageView loginBtn;
+    ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +30,19 @@ public class RegisterActivity extends AppCompatActivity {
         confirmPasswordInput = findViewById(R.id.register_confirm_password_input);
         registerBtn = findViewById(R.id.register_btn);
         loginBtn = findViewById(R.id.register_login_btn);
+        backBtn = findViewById(R.id.register_back_btn);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RegisterActivity.super.onBackPressed();
             }
         });
     }

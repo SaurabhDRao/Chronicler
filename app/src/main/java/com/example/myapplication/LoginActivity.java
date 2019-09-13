@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,7 +19,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailInput, passwordInput;
     Button loginBtn;
     ImageView registerBtn;
-
+    ImageButton backBtn;
 
 
     @Override
@@ -32,11 +33,19 @@ public class LoginActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.login_password_input);
         loginBtn = findViewById(R.id.login_btn);
         registerBtn = findViewById(R.id.login_register_btn);
+        backBtn = findViewById(R.id.login_back_btn);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginActivity.super.onBackPressed();
             }
         });
     }
