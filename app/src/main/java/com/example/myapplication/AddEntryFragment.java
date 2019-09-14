@@ -41,7 +41,9 @@ public class AddEntryFragment extends Fragment {
                 jEntry.setId(MainActivity.myDatabase.journalDao().getMaxId() + 1);
                 jEntry.setTitle(titleInput.getText().toString());
                 jEntry.setBody(bodyInput.getText().toString());
-                jEntry.setDateTime(new SimpleDateFormat("yyyy-mm-dd hh:mm:ss").format(new Date()));
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                Date date = new Date();
+                jEntry.setDateTime(formatter.format(date));
 
                 MainActivity.myDatabase.journalDao().addEntry(jEntry);
 
@@ -49,6 +51,8 @@ public class AddEntryFragment extends Fragment {
 
                 titleInput.setText("");
                 bodyInput.setText("");
+
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
             }
         });

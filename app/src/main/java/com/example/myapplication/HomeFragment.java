@@ -6,11 +6,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.myapplication.Adapters.JournalEntryAdapter;
 import com.example.myapplication.Database.JournalEntry;
 
 import java.util.List;
@@ -18,7 +21,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    TextView allEntriesTv;
+    RecyclerView allEntriesView;
     FloatingActionButton addEntryBtn;
 
     @Nullable
@@ -26,7 +29,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        allEntriesTv = fragmentView.findViewById(R.id.allEntries);
+        allEntriesView = fragmentView.findViewById(R.id.all_entries_recycler_view);
         addEntryBtn = fragmentView.findViewById(R.id.home_add_entry_btn);
 
         showAllEntries();
@@ -43,15 +46,12 @@ public class HomeFragment extends Fragment {
 
     private void showAllEntries() {
 
+        allEntriesView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         List<JournalEntry> allEntries = MainActivity.myDatabase.journalDao().getAllJournalEntries();
 
-        String entryStr = "";
-
-        for(JournalEntry entry : allEntries) {
-            entryStr += (entry.getId() + " " + entry.getTitle() + " " + entry.getBody() + " " + entry.getDateTime() + "\n");
-        }
-
-        allEntriesTv.setText(entryStr);
+        JournalEntryAdapter entryAdapter = new JournalEntryAdapter(getContext(), allEntries);
+        allEntriesView.setAdapter(entryAdapter);
 
     }
 }
