@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.myapplication.Database.JournalEntry;
@@ -21,6 +22,7 @@ public class AddEntryFragment extends Fragment {
     EditText titleInput, bodyInput;
     Button addEntryBtn;
     ImageButton backButton;
+    TextView dateTv;
 
     @Nullable
     @Override
@@ -31,6 +33,12 @@ public class AddEntryFragment extends Fragment {
         bodyInput = fragmentView.findViewById(R.id.add_entry_body);
         addEntryBtn = fragmentView.findViewById(R.id.add_entry_btn);
         backButton = fragmentView.findViewById(R.id.add_entry_back_btn);
+        dateTv = fragmentView.findViewById(R.id.add_entry_date);
+
+        final Date jeDate = new Date();
+
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy");
+        dateTv.setText(format.format(jeDate));
 
         addEntryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,9 +49,9 @@ public class AddEntryFragment extends Fragment {
                 jEntry.setId(MainActivity.myDatabase.journalDao().getMaxId() + 1);
                 jEntry.setTitle(titleInput.getText().toString());
                 jEntry.setBody(bodyInput.getText().toString());
+
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                Date date = new Date();
-                jEntry.setDateTime(formatter.format(date));
+                jEntry.setDateTime(formatter.format(jeDate));
 
                 MainActivity.myDatabase.journalDao().addEntry(jEntry);
 

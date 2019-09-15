@@ -36,6 +36,8 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        setHasOptionsMenu(false);
+
         return fragmentView;
     }
 }
