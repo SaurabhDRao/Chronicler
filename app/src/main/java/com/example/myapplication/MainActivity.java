@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+//        getSupportActionBar().hide();
+
         myDatabase = Room.databaseBuilder(getApplicationContext(), JournalDatabase.class, "chroniclerdb").allowMainThreadQueries().build();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
@@ -52,14 +54,17 @@ public class MainActivity extends AppCompatActivity {
                     switch(item.getItemId()) {
                         case R.id.navigation_home:
                             selectedFragment = new HomeFragment();
+//                            getSupportActionBar().hide();
                             break;
 
                         case R.id.navigation_settings:
                             selectedFragment = new SettingsFragment();
+//                            getSupportActionBar().show();
                             break;
 
                         case R.id.navigation_dashboard:
                             selectedFragment = new DashboardFragment();
+//                            getSupportActionBar().show();
                             break;
 
                         default: return false;
