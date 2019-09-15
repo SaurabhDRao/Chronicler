@@ -1,7 +1,10 @@
 package com.example.myapplication.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,8 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.myapplication.AddEntryFragment;
 import com.example.myapplication.Database.JournalEntry;
+import com.example.myapplication.HomeFragment;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +44,7 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JournalViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull JournalViewHolder holder, final int position) {
 
         String str = myEntry.get(position).getDateTime();
         String dateTime[] = str.split(" ");
@@ -57,6 +64,36 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
         else
             res = bodyStr.substring(0, l);
         holder.bodyTv.setText(res);
+
+        holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
+                builder.setTitle("Confirm delete");
+                builder.setMessage("Are you sure you want to delete '" + myEntry.get(position).getTitle() + "'?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        JournalEntry entry = new JournalEntry();
+                        entry.setId(myEntry.get(position).getId());
+                        myEntry.remove(position);
+                        MainActivity.myDatabase.journalDao().deleteItem(entry);
+                        Toast.makeText(myContext, myEntry.get(position).getTitle() + " deleted!", Toast.LENGTH_SHORT).show();
+                        notifyItemRemoved(position);
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
     }
 

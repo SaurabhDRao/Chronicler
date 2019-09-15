@@ -1,6 +1,7 @@
 package com.example.myapplication.Database;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
@@ -12,10 +13,13 @@ public interface JournalDao {
     @Insert
     public void addEntry(JournalEntry entry);
 
-    @Query("select * from JournalEntry")
+    @Query("select * from JournalEntry order by id desc")
     public List<JournalEntry> getAllJournalEntries();
 
     @Query("select max(id) as id from journalentry")
     public int getMaxId();
+
+    @Delete
+    public void deleteItem(JournalEntry entry);
 
 }
