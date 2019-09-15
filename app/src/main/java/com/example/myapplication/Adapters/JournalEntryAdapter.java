@@ -3,10 +3,10 @@ package com.example.myapplication.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +14,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.AddEntryFragment;
 import com.example.myapplication.Database.JournalEntry;
-import com.example.myapplication.HomeFragment;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.ViewEntryActivity;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapter.JournalViewHolder> {
@@ -52,18 +48,10 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
 
         String[] monthList = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-        System.out.println(yearMonthDate[0] + yearMonthDate[1] + yearMonthDate[2]);
         holder.monthAndDateTv.setText(monthList[Integer.parseInt(yearMonthDate[1]) - 1] + " " + yearMonthDate[0]);
         holder.yearTv.setText(yearMonthDate[2]);
         holder.titleTv.setText(myEntry.get(position).getTitle());
-        String bodyStr = myEntry.get(position).getBody();
-        int l = bodyStr.length();
-        String res = "";
-        if(l > 50)
-            res = bodyStr.substring(0, 51) + "...";
-        else
-            res = bodyStr.substring(0, l);
-        holder.bodyTv.setText(res);
+        holder.bodyTv.setText(myEntry.get(position).getBody());
 
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,6 +103,28 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
             titleTv = itemView.findViewById(R.id.je_title);
             bodyTv = itemView.findViewById(R.id.je_body);
             deleteBtn = itemView.findViewById(R.id.je_delete_btn);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(myContext, ViewEntryActivity.class);
+
+                    int pos = getAdapterPosition();
+
+                    String str = myEntry.get(pos).getDateTime();
+                    String dateTime[] = str.split(" ");
+                    String[] yearMonthDate = dateTime[0].split("/");
+                    String[] monthList = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+                    String month = monthList[Integer.parseInt(yearMonthDate[1]) - 1];
+                    String dateTimeStr = month + " " + yearMonthDate[0] + ", " + yearMonthDate[2] + " | " + dateTime[1];
+
+                    i.putExtra("title", myEntry.get(pos).getTitle());
+                    i.putExtra("body", myEntry.get(pos).getBody());
+                    i.putExtra("dateTime", dateTimeStr);
+
+                    myContext.startActivity(i);
+                }
+            });
         }
     }
 }

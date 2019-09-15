@@ -9,7 +9,8 @@
     android:layout_marginLeft="20dp"
     android:layout_marginTop="20dp"
     android:layout_marginRight="20dp"
-    android:layout_marginBottom="0dp" >
+    android:layout_marginBottom="0dp"
+    android:id="@+id/je_item">
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -76,7 +77,10 @@
             android:text="This is a title "
             android:textColor="#fff"
             android:textSize="24sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/je_body"
@@ -85,7 +89,10 @@
             android:text="This is some text that is way too crazy boys!"
             android:textColor="#aaa"
             android:paddingRight="5dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:maxLines="2" />
 
     </LinearLayout>
 
