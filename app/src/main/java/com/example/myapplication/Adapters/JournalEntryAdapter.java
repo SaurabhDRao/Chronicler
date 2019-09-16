@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,22 +54,28 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
         holder.titleTv.setText(myEntry.get(position).getTitle());
         holder.bodyTv.setText(myEntry.get(position).getBody());
 
+        final String title = myEntry.get(position).getTitle();
+        final int entryId = myEntry.get(position).getId();
+
         holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
                 builder.setTitle("Confirm delete");
-                builder.setMessage("Are you sure you want to delete '" + myEntry.get(position).getTitle() + "'?");
+                builder.setMessage("Are you sure you want to delete '" + title + "'?");
                 builder.setCancelable(false);
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         JournalEntry entry = new JournalEntry();
-                        entry.setId(myEntry.get(position).getId());
+                        entry.setId(entryId);
+                        Log.wtf("REMOVE", position + "");
+                        Log.wtf("REMOVE", title);
                         myEntry.remove(position);
                         MainActivity.myDatabase.journalDao().deleteItem(entry);
-                        Toast.makeText(myContext, myEntry.get(position).getTitle() + " deleted!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(myContext, title + " deleted!", Toast.LENGTH_SHORT).show();
                         notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, myEntry.size());
                     }
                 });
 

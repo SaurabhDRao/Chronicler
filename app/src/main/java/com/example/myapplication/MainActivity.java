@@ -21,10 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.Database.JournalDatabase;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView navView;
+    private FirebaseAuth myAuth;
+    FirebaseUser user;
 
     public static JournalDatabase myDatabase;
 
@@ -64,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
 
                         case R.id.navigation_dashboard:
                             selectedFragment = new DashboardFragment();
+                            if(user != null) {
+
+                            }
 //                            getSupportActionBar().show();
                             break;
 
@@ -75,4 +83,11 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        user = myAuth.getCurrentUser();
+    }
 }
