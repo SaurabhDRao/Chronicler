@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
         allEntriesView = fragmentView.findViewById(R.id.all_entries_recycler_view);
         addEntryBtn = fragmentView.findViewById(R.id.home_add_entry_btn);
 
-        showAllEntries();
+        showAllEntries(fragmentView);
 
         addEntryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,11 +47,15 @@ public class HomeFragment extends Fragment {
         return fragmentView;
     }
 
-    private void showAllEntries() {
+    private void showAllEntries(View fragmentView) {
 
         allEntriesView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         List<JournalEntry> allEntries = MainActivity.myDatabase.journalDao().getAllJournalEntries();
+
+        if(allEntries.size() == 0) {
+            fragmentView.findViewById(R.id.no_entries).setVisibility(View.VISIBLE);
+        }
 
         JournalEntryAdapter entryAdapter = new JournalEntryAdapter(getContext(), allEntries);
         allEntriesView.setAdapter(entryAdapter);

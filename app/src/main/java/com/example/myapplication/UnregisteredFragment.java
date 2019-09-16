@@ -25,14 +25,14 @@ public class UnregisteredFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), LoginActivity.class));
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new LoginFragment()).commit();
             }
         });
 
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getContext(), RegisterActivity.class));
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new RegisterFragment()).commit();
             }
         });
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().show();
