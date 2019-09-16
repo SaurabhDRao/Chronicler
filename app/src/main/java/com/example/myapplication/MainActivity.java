@@ -68,9 +68,10 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.navigation_dashboard:
-                            selectedFragment = new DashboardFragment();
                             if(user != null) {
-
+                                selectedFragment = new DashboardFragment();
+                            } else {
+                                selectedFragment = new UnregisteredFragment();
                             }
 //                            getSupportActionBar().show();
                             break;
