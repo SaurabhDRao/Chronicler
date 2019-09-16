@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 //        getSupportActionBar().hide();
+        myAuth = FirebaseAuth.getInstance();
 
         myDatabase = Room.databaseBuilder(getApplicationContext(), JournalDatabase.class, "chroniclerdb").allowMainThreadQueries().build();
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 selectedFragment = new UnregisteredFragment();
                             }
-//                            getSupportActionBar().show();
+////                            getSupportActionBar().show();
                             break;
 
                         default: return false;
