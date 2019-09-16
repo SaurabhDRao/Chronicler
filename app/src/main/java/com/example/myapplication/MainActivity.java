@@ -51,6 +51,22 @@ public class MainActivity extends AppCompatActivity {
         Log.d("YO", "das");
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        if(myAuth.getCurrentUser() != null)
+            getMenuInflater().inflate(R.menu.logout_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        myAuth.signOut();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UnregisteredFragment()).commit();
+        return true;
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -69,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.navigation_dashboard:
-                            if(user != null) {
+                            if(myAuth.getCurrentUser() != null) {
                                 selectedFragment = new DashboardFragment();
                             } else {
                                 selectedFragment = new UnregisteredFragment();
