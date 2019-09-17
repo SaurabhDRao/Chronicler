@@ -8,10 +8,13 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/settings_profile"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="settings fragment"
-        android:textColor="@color/primaryBlue"
-        android:textSize="20sp"/>
+        android:layout_height="wrap_content"
+        android:text="My Profile"
+        android:textColor="@color/primaryPurple"
+        android:textSize="25sp"
+        android:background="@color/backgroundColorLight"
+        android:padding="15dp"/>
 
 </FrameLayout>

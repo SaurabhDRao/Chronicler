@@ -7,12 +7,35 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class SettingsFragment extends Fragment {
+
+    TextView profileTv;
+    FirebaseAuth myAuth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View fragmentView = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        myAuth = FirebaseAuth.getInstance();
+
+        profileTv = fragmentView.findViewById(R.id.settings_profile);
+
+        if(myAuth.getCurrentUser() == null)
+            profileTv.setVisibility(View.INVISIBLE);
+
+        profileTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+            }
+        });
+
+        return fragmentView;
     }
 }
