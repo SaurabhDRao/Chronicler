@@ -116,6 +116,8 @@ public class RegisterFragment extends Fragment {
                                             if(task.isSuccessful()) {
                                                 showMessage("Registration Complete!");
                                                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+                                                setHasOptionsMenu(true);
+                                                getActivity().invalidateOptionsMenu();
                                             }
                                         }
                                     });

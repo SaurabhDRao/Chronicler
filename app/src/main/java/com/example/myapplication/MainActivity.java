@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
         myAuth.signOut();
+        navView.getMenu().findItem(R.id.navigation_dashboard).setChecked(true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new UnregisteredFragment()).commit();
+        item.setVisible(false);
         return true;
     }
 

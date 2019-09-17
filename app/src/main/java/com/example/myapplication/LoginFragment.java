@@ -86,6 +86,8 @@ public class LoginFragment extends Fragment {
                     loginProgress.setVisibility(View.INVISIBLE);
                     loginBtn.setVisibility(View.VISIBLE);
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment()).commit();
+                    setHasOptionsMenu(true);
+                    getActivity().invalidateOptionsMenu();
                 } else {
                     showMessage(task.getException().getMessage());
                     loginProgress.setVisibility(View.INVISIBLE);
