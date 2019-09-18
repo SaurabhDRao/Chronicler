@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,7 +33,7 @@ public class SettingsFragment extends Fragment {
         profileTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new ProfileFragment()).commit();
+                startActivity(new Intent(getContext(), ProfileActivity.class));
             }
         });
 
