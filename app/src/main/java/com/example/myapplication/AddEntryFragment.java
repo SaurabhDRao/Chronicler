@@ -79,11 +79,14 @@ public class AddEntryFragment extends Fragment {
 
                 if(shareCkb.isChecked()) {
                     if(currentUser != null) {
+                        String picUrl = "";
+                        if(currentUser.getPhotoUrl() != null)
+                            picUrl = currentUser.getPhotoUrl().toString();
                         Post post = new Post(
                                 currentUser.getUid(),
                                 titleInput.getText().toString(),
                                 bodyInput.getText().toString(),
-                                currentUser.getPhotoUrl().toString(),
+                                picUrl,
                                 currentUser.getDisplayName(),
                                 0
                         );
