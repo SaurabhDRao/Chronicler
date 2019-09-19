@@ -1,6 +1,7 @@
 package com.example.myapplication.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.Models.Post;
+import com.example.myapplication.PostDetailsActivity;
 import com.example.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
@@ -76,6 +78,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             dateTimeTv = itemView.findViewById(R.id.post_date_time);
             likeCountTv = itemView.findViewById(R.id.post_like_count);
             userImg = itemView.findViewById(R.id.post_user_img);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(myContext, PostDetailsActivity.class);
+
+                    int pos = getAdapterPosition();
+
+                    i.putExtra("title", myData.get(pos).getTitle());
+                    i.putExtra("body", myData.get(pos).getBody());
+                    i.putExtra("postKey", myData.get(pos).getPostKey());
+                    i.putExtra("username", myData.get(pos).getUsername());
+                    i.putExtra("userId", myData.get(pos).getUserId());
+                    i.putExtra("likeCount", myData.get(pos).getLikeCount() + "");
+                    i.putExtra("userImg", myData.get(pos).getUserPhoto());
+                    i.putExtra("dateTime", timeStampToString((long) myData.get(pos).getPostedDateTime()));
+
+                    myContext.startActivity(i);
+                }
+            });
+
         }
     }
 }
