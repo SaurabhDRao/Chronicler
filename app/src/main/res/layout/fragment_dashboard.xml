@@ -23,6 +23,7 @@
             android:layout_marginRight="24dp"
             android:background="@drawable/edittext_style"
             android:hint="Search"
+            android:visibility="invisible"
             android:textColor="#fff"
             android:textColorHint="#aaa"
             android:textCursorDrawable="@drawable/edittext_cursor_color"
@@ -39,7 +40,7 @@
             android:paddingBottom="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dashboard_search_bar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/dashboard_progressBar"

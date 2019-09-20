@@ -22,4 +22,7 @@ public interface JournalDao {
     @Delete
     public void deleteItem(JournalEntry entry);
 
+    @Query("select * from JournalEntry where dateTime like :dateStr")
+    public List<JournalEntry> getEntriesBasedOnDate(String dateStr);
+
 }
