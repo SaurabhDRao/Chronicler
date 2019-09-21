@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import com.example.myapplication.Models.Post;
 import com.example.myapplication.PostDetailsActivity;
 import com.example.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -25,10 +28,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     Context myContext;
     List<Post> myData;
+    FirebaseUser currentUser;
 
     public PostAdapter(Context myContext, List<Post> myData) {
         this.myContext = myContext;
         this.myData = myData;
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @NonNull
@@ -49,7 +54,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.bodyTv.setText(myData.get(position).getBody());
         holder.usernameTv.setText(myData.get(position).getUsername());
         holder.dateTimeTv.setText(timeStampToString((long) myData.get(position).getPostedDateTime()));
-        holder.likeCountTv.setText(myData.get(position).getLikeCount() + "");
+
+        int likeCount = myData.get(position).getLikeCount();
+        holder.likeCountTv.setText(likeCount + "");
+
+        String likedUsers[] = myData.get(position).getLikedUsers().split(",");
+        for(String likedUser : likedUsers) {
+            if(likedUser.equals(currentUser.getUid())) {
+                holder.likeImgBtn.setImageDrawable(myContext.getResources().getDrawable(R.drawable.ic_thumb_up_blue_24dp));
+                break;
+            }
+        }
+
+        Log.wtf("LIKED_USERS", myData.get(position).getLikedUsers() + " " + myData.get(position).getUserId());
     }
 
     @Override
@@ -68,6 +85,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         TextView titleTv, bodyTv, usernameTv, dateTimeTv, likeCountTv;
         ImageView userImg;
+        ImageButton likeImgBtn;
 
         public PostViewHolder(View itemView) {
             super(itemView);
@@ -78,6 +96,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             dateTimeTv = itemView.findViewById(R.id.post_date_time);
             likeCountTv = itemView.findViewById(R.id.post_like_count);
             userImg = itemView.findViewById(R.id.post_user_img);
+            likeImgBtn = itemView.findViewById(R.id.post_like_img);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -94,6 +113,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     i.putExtra("likeCount", myData.get(pos).getLikeCount() + "");
                     i.putExtra("userImg", myData.get(pos).getUserPhoto());
                     i.putExtra("dateTime", timeStampToString((long) myData.get(pos).getPostedDateTime()));
+
+                    boolean liked = false;
+                    String likedUsers[] = myData.get(pos).getLikedUsers().split(",");
+                    for(String likedUser : likedUsers) {
+                        if(likedUser.equals(currentUser.getUid())) {
+                            liked = true;
+                            break;
+                        }
+                    }
+                    i.putExtra("liked", liked);
 
                     myContext.startActivity(i);
                 }

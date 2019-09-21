@@ -20,6 +20,9 @@ public class JournalEntry {
     @ColumnInfo (name = "dateTime")
     private String dateTime;
 
+    @ColumnInfo (name = "shared")
+    private int shared;
+
     public int getId() {
         return id;
     }
@@ -50,5 +53,13 @@ public class JournalEntry {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public int getShared() {
+        return shared;
+    }
+
+    public void setShared(int shared) {
+        this.shared = shared;
     }
 }

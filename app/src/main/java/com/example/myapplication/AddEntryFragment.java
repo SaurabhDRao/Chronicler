@@ -75,13 +75,15 @@ public class AddEntryFragment extends Fragment {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 jEntry.setDateTime(formatter.format(jeDate));
 
-                MainActivity.myDatabase.journalDao().addEntry(jEntry);
+                jEntry.setShared(0);
 
                 if(shareCkb.isChecked()) {
                     if(currentUser != null) {
                         String picUrl = "";
                         if(currentUser.getPhotoUrl() != null)
                             picUrl = currentUser.getPhotoUrl().toString();
+
+                        jEntry.setShared(1);
                         Post post = new Post(
                                 currentUser.getUid(),
                                 titleInput.getText().toString(),
@@ -100,6 +102,8 @@ public class AddEntryFragment extends Fragment {
                     showMessage("Journal entry added!");
                     getFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 }
+
+                MainActivity.myDatabase.journalDao().addEntry(jEntry);
 
                 titleInput.setText("");
                 bodyInput.setText("");

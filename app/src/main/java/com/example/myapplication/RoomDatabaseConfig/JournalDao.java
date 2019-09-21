@@ -25,4 +25,7 @@ public interface JournalDao {
     @Query("select * from JournalEntry where dateTime like :dateStr")
     public List<JournalEntry> getEntriesBasedOnDate(String dateStr);
 
+    @Query("update JournalEntry set shared = :shared")
+    public void updateShared(int shared);
+
 }

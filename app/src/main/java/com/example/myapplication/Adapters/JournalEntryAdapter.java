@@ -127,6 +127,7 @@ public class JournalEntryAdapter extends RecyclerView.Adapter<JournalEntryAdapte
                     i.putExtra("title", myEntry.get(pos).getTitle());
                     i.putExtra("body", myEntry.get(pos).getBody());
                     i.putExtra("dateTime", dateTimeStr);
+                    i.putExtra("shared", myEntry.get(pos).getShared() + "");
 
                     myContext.startActivity(i);
                 }

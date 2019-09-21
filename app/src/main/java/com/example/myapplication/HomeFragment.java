@@ -57,9 +57,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Calendar c = Calendar.getInstance();
-                int year = c.get(Calendar.YEAR);
-                int month = c.get(Calendar.MONTH);
+                final int yearToday = c.get(Calendar.YEAR);
+                final int monthToday = c.get(Calendar.MONTH);
                 final int day = c.get(Calendar.DAY_OF_MONTH);
+                final String todayStr = day + "/" + monthToday + "/" + yearToday;
 
                 DatePickerDialog d = new DatePickerDialog(view.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -68,7 +69,7 @@ public class HomeFragment extends Fragment {
                         if(m.length() == 1)
                             m = "0" + m;
                         String dateStr = "%" + dayOfMonth + "/" + m + "/" + year + "%";
-                        Log.wtf("DATE_STR", dateStr);
+                        Log.wtf("DATE_STR", dateStr + " " + todayStr);
                         List<JournalEntry> searchEntries = MainActivity.myDatabase.journalDao().getEntriesBasedOnDate(dateStr);
                         if(searchEntries.size() == 0) {
                             fragmentView.findViewById(R.id.no_entries).setVisibility(View.VISIBLE);
@@ -77,7 +78,7 @@ public class HomeFragment extends Fragment {
                         }
                         showEntries(fragmentView, searchEntries);
                     }
-                }, year, month, day);
+                }, yearToday, monthToday, day);
                 d.show();
             }
         });

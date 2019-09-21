@@ -4,7 +4,7 @@ import com.google.firebase.database.ServerValue;
 
 public class Post {
 
-    private String postKey, userId, title, body, userPhoto, username;
+    private String postKey, userId, title, body, userPhoto, username, likedUsers;
     private Object postedDateTime;
     private int likeCount;
 
@@ -20,6 +20,7 @@ public class Post {
         this.username = username;
         this.postedDateTime = ServerValue.TIMESTAMP;
         this.likeCount = likeCount;
+        this.likedUsers = "";
     }
 
     public String getPostKey() {
@@ -84,5 +85,13 @@ public class Post {
 
     public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
+    }
+
+    public String getLikedUsers() {
+        return likedUsers;
+    }
+
+    public void setLikedUsers(String likedUsers) {
+        this.likedUsers = likedUsers;
     }
 }
