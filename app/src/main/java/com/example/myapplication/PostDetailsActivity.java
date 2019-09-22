@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.myapplication.Models.Comment;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -24,8 +30,12 @@ import java.util.Locale;
 public class PostDetailsActivity extends AppCompatActivity {
 
     TextView titleTv, bodyTv, usernameTv, dateTimeTv, likeCountTv;
-    ImageView userImg;
+    ImageView userImg, currentUserImg;
     ImageButton likeBtn;
+    EditText commentInput;
+    Button addComentBtn;
+
+    FirebaseDatabase firebaseDatabase;
 
     boolean liked;
 
@@ -34,6 +44,8 @@ public class PostDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_details);
 
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
         titleTv = findViewById(R.id.post_title_details);
         bodyTv = findViewById(R.id.post_body_details);
         usernameTv = findViewById(R.id.post_user_name_details);
@@ -41,6 +53,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         likeCountTv = findViewById(R.id.post_like_count_details);
         userImg = findViewById(R.id.post_user_img_details);
         likeBtn = findViewById(R.id.post_details_like_img);
+        currentUserImg = findViewById(R.id.post_details_current_user_img);
+        commentInput = findViewById(R.id.post_details_write_comment);
+        addComentBtn = findViewById(R.id.post_details_add_comment_btn);
 
         liked = getIntent().getExtras().getBoolean("liked");
         Log.wtf("LIKED", liked + "");
@@ -52,6 +67,11 @@ public class PostDetailsActivity extends AppCompatActivity {
         final String picUrl = getIntent().getExtras().getString("userImg");
         if(!picUrl.equals("")) {
             Picasso.get().load(picUrl).into(userImg);
+        }
+
+        final String currentUserPicUrl = getIntent().getExtras().getString("currentUserImg");
+        if(!currentUserPicUrl.equals("")) {
+            Picasso.get().load(currentUserPicUrl).into(currentUserImg);
         }
 
         titleTv.setText(getIntent().getExtras().getString("title"));
@@ -102,5 +122,36 @@ public class PostDetailsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        addComentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String postKey = getIntent().getExtras().getString("postKey");
+                DatabaseReference commentRef = firebaseDatabase.getReference("Comments").child(postKey).push();
+                String commentContent = commentInput.getText().toString();
+                String uid = getIntent().getExtras().getString("currentUserId");
+                String uname = getIntent().getExtras().getString("currentUserName");
+                String uimg = getIntent().getExtras().getString("currentUserImg");
+
+                Comment comment = new Comment(uid, uname, uimg, commentContent);
+
+                commentRef.setValue(comment).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        showMessage("Comment posted successfully!");
+                        commentInput.setText("");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        showMessage("Failed to add comment!\n" + e.getMessage());
+                    }
+                });
+            }
+        });
+    }
+
+    private void showMessage(String message) {
+        Toast.makeText(PostDetailsActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 }
