@@ -3,6 +3,8 @@ package com.example.myapplication;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -13,18 +15,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Adapters.CommentAdapter;
 import com.example.myapplication.Models.Comment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class PostDetailsActivity extends AppCompatActivity {
@@ -34,8 +42,12 @@ public class PostDetailsActivity extends AppCompatActivity {
     ImageButton likeBtn;
     EditText commentInput;
     Button addComentBtn;
+    RecyclerView rvComment;
 
     FirebaseDatabase firebaseDatabase;
+
+    CommentAdapter commentAdapter;
+    List<Comment> commentList;
 
     boolean liked;
 
@@ -56,6 +68,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         currentUserImg = findViewById(R.id.post_details_current_user_img);
         commentInput = findViewById(R.id.post_details_write_comment);
         addComentBtn = findViewById(R.id.post_details_add_comment_btn);
+        rvComment = findViewById(R.id.rv_comment);
+
+        commentInput.clearFocus();
 
         liked = getIntent().getExtras().getBoolean("liked");
         Log.wtf("LIKED", liked + "");
@@ -149,6 +164,37 @@ public class PostDetailsActivity extends AppCompatActivity {
                 });
             }
         });
+
+        initRVComment();
+    }
+
+    private void initRVComment() {
+
+        rvComment.setLayoutManager(new LinearLayoutManager(this));
+        rvComment.setNestedScrollingEnabled(false);
+
+        String postKey = getIntent().getExtras().getString("postKey");
+
+        DatabaseReference commentRef = firebaseDatabase.getReference("Comments").child(postKey);
+        commentRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                commentList = new ArrayList<>();
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Comment comment = snapshot.getValue(Comment.class);
+                    commentList.add(0, comment);
+                }
+
+                commentAdapter = new CommentAdapter(getApplicationContext(), commentList);
+                rvComment.setAdapter(commentAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void showMessage(String message) {

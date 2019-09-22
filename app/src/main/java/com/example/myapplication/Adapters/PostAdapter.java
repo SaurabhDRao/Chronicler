@@ -176,7 +176,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                     i.putExtra("currentUserId", currentUser.getUid());
                     i.putExtra("likeCount", myData.get(pos).getLikeCount() + "");
                     i.putExtra("userImg", myData.get(pos).getUserPhoto());
-                    i.putExtra("currentUserImg", currentUser.getPhotoUrl().toString());
+                    if(currentUser.getPhotoUrl() != null) {
+                        i.putExtra("currentUserImg", currentUser.getPhotoUrl().toString());
+                    } else {
+                        i.putExtra("currentUserImg", "");
+                    }
                     i.putExtra("dateTime", timeStampToString((long) myData.get(pos).getPostedDateTime()));
                     i.putExtra("dateTimeStamp", (long) myData.get(pos).getPostedDateTime());
 
