@@ -5,25 +5,12 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.myapplication.LoginActivity">
+    tools:context="com.example.myapplication.MainActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/nav_view"
-        android:background="@color/backgroundColor">
-
-    </FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/next_btn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColorLight"
-        app:itemTextColor="#aaa"
-        app:itemIconTint="#aaa"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/bottom_nav_menu" />
+        android:text="Button" />
 
 </RelativeLayout>

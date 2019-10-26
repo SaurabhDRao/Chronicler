@@ -38,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     Uri pickedImgUri;
 
-    TextView emailTv;
+    TextView emailTv, usernameTv;
     ImageView profileImg;
     FirebaseAuth myAuth;
     FirebaseUser currentUser;
@@ -50,12 +50,14 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         emailTv = findViewById(R.id.profile_email);
+        usernameTv = findViewById(R.id.profile_username);
         profileImg = findViewById(R.id.profile_image);
         progressBar = findViewById(R.id.profile_progressBar);
 
         myAuth = FirebaseAuth.getInstance();
         currentUser = myAuth.getCurrentUser();
         emailTv.setText(myAuth.getCurrentUser().getEmail());
+        usernameTv.setText(myAuth.getCurrentUser().getDisplayName());
 
         if(currentUser.getPhotoUrl() != null) {
             Picasso.get().load(currentUser.getPhotoUrl()).into(profileImg);
