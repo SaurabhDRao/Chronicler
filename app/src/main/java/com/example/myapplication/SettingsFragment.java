@@ -43,25 +43,8 @@ public class SettingsFragment extends Fragment {
         changePasswordTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                alertDialog.setTitle("Change lock screen background");
-                alertDialog.setMessage("Do you want to change the lock screen background along with points?");
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-
-                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(getContext(), EnterCurrentLockPointsActivity.class);
-                        startActivity(intent);
-                    }
-                });
-
-                alertDialog.show();
+                Intent intent = new Intent(getContext(), EnterCurrentLockPointsActivity.class);
+                startActivity(intent);
             }
         });
 

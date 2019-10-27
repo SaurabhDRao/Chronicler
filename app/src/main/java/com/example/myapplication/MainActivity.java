@@ -137,17 +137,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btn = findViewById(R.id.next_btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myDatabase.lockPointsDao().deleteData();
-                pointsList.clear();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-            }
-        });
-
     }
 
     private boolean checkDistance(int x, int y, int a, int b) {
@@ -159,5 +148,27 @@ public class MainActivity extends AppCompatActivity {
             return true;
         else
             return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.forget_password_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()) {
+            case R.id.forget_password:
+                myDatabase.lockPointsDao().deleteData();
+                pointsList.clear();
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+                return true;
+            default: return false;
+        }
     }
 }
