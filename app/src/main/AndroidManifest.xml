@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BaseActivity"></activity>
+        <activity android:name=".EnterCurrentLockPointsActivity"></activity>
+        <activity android:name=".ChangeLockPointsActivity" />
+        <activity android:name=".BaseActivity" />
         <activity android:name=".PostDetailsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ViewEntryActivity" />

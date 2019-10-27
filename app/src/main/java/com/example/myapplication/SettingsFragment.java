@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SettingsFragment extends Fragment {
 
-    TextView profileTv;
+    TextView profileTv, changePasswordTv;
     FirebaseAuth myAuth;
 
     @Nullable
@@ -26,6 +28,7 @@ public class SettingsFragment extends Fragment {
         myAuth = FirebaseAuth.getInstance();
 
         profileTv = fragmentView.findViewById(R.id.settings_profile);
+        changePasswordTv = fragmentView.findViewById(R.id.settings_change_password);
 
         if(myAuth.getCurrentUser() == null)
             profileTv.setVisibility(View.INVISIBLE);
@@ -34,6 +37,31 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getContext(), ProfileActivity.class));
+            }
+        });
+
+        changePasswordTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
+                alertDialog.setTitle("Change lock screen background");
+                alertDialog.setMessage("Do you want to change the lock screen background along with points?");
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(getContext(), EnterCurrentLockPointsActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+                alertDialog.show();
             }
         });
 
